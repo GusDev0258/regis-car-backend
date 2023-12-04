@@ -6,27 +6,18 @@ import {
   Patch,
   Param,
   Delete,
-  UseInterceptors,
-  UploadedFile,
 } from '@nestjs/common';
 import { CarsService } from './cars.service';
 import { CreateCarDto } from './dto/create-car.dto';
 import { UpdateCarDto } from './dto/update-car.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('cars')
 export class CarsController {
   constructor(private readonly carsService: CarsService) {}
 
   @Post()
-  create(@Body() createCarDto: CreateCarDto) {
-    return this.carsService.create(createCarDto);
-  }
-
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('foto'))
-  uploadCarImage(@UploadedFile() file: Express.Multer.File) {
-    console.log(file);
+  async create(@Body() createCarDto: CreateCarDto) {
+    return await this.carsService.create(createCarDto);
   }
 
   @Get()

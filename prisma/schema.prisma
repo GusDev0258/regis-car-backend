@@ -15,6 +15,8 @@ model Car {
   nome String
   marca String
   ano Int
+  image File @relation(fields: [imageId], references: [id])
+  imageId Int @unique
 }
 
 model File {
@@ -22,6 +24,8 @@ model File {
   fileName String
   url String
   fileType String
+  fileLength Int
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  car Car?
 }

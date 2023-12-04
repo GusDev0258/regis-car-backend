@@ -1,19 +1,30 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
+import { Request } from 'express';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { File } from './entities/file.entity';
+import fs from 'fs';
 
 @Injectable()
 export class FilesService {
-  create(createFileDto: CreateFileDto) {
-    return 'This action adds a new file';
+  constructor(private readonly prisma: PrismaService) {}
+
+  async saveData(file: Express.Multer.File, req: Request) {
+    const arquivo = new File();
+    arquivo.fileName = file.filename;
+    arquivo.fileLength = file.size;
+    arquivo.fileType = file.mimetype;
+    arquivo.url = `/upload/files/${file.filename}`;
+
+    return await this.prisma.file.create({ data: arquivo });
   }
 
   findAll() {
     return `This action returns all files`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} file`;
+  async findOne(id: number) {
+    return await this.prisma.file.findFirst({ where: { id } });
   }
 
   update(id: number, updateFileDto: UpdateFileDto) {
