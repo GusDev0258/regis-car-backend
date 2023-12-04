@@ -9,15 +9,13 @@ import {
   UseInterceptors,
   UploadedFile,
   Req,
-  StreamableFile,
-  Header,
 } from '@nestjs/common';
 import { FilesService } from './files.service';
 import { UpdateFileDto } from './dto/update-file.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import multerConfig from './multer-config';
 import { Request } from 'express';
-import { createReadStream } from 'fs';
+import * as fs from 'fs';
 import { join } from 'path';
 
 @Controller('files')
@@ -40,7 +38,13 @@ export class FilesController {
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return await this.filesService.findOne(+id);
+    const file = await this.filesService.findOne(+id);
+    return `<img src='data:image/jpg;base64,${fs.readFileSync(
+      join(`${process.cwd()}/${file.url}`),
+      {
+        encoding: 'base64',
+      },
+    )}' alt='carro' width='300' height='200' />`;
   }
 
   @Patch(':id')

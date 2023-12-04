@@ -3,7 +3,6 @@ import { UpdateFileDto } from './dto/update-file.dto';
 import { Request } from 'express';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { File } from './entities/file.entity';
-import fs from 'fs';
 
 @Injectable()
 export class FilesService {

@@ -23,7 +23,10 @@ export class CarsService {
   }
 
   async findOne(id: number) {
-    return await this.prisma.car.findUnique({ where: { id } });
+    return await this.prisma.car.findUnique({
+      where: { id },
+      include: { image: true },
+    });
   }
 
   update(id: number, updateCarDto: UpdateCarDto) {
