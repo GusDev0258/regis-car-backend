@@ -39,12 +39,14 @@ export class FilesController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const file = await this.filesService.findOne(+id);
-    return `<img src='data:image/jpg;base64,${fs.readFileSync(
-      join(`${process.cwd()}/${file.url}`),
-      {
-        encoding: 'base64',
-      },
-    )}' alt='carro' width='300' height='200' />`;
+    return JSON.stringify(
+      `data:image/jpg;base64,${fs.readFileSync(
+        join(`${process.cwd()}/${file.url}`),
+        {
+          encoding: 'base64',
+        },
+      )}`,
+    );
   }
 
   @Patch(':id')
